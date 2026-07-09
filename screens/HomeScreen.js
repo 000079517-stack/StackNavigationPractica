@@ -1,12 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-// Pantalla principal de la app
 export default function HomeScreen({ navigation }) {
+
   return (
     <View style={styles.container}>
 
+      {/* Título principal de la app */}
       <Text style={styles.title}>App del curso</Text>
 
+      {/* Subtítulo */}
       <Text style={styles.subtitle}>
         Sesión 2: navegación y datos locales
       </Text>
@@ -14,7 +16,7 @@ export default function HomeScreen({ navigation }) {
       {/* Botón para ir al listado */}
       <Pressable
         style={styles.button}
-        onPress={() => navigation.navigate("Items")}
+        onPress={() => navigation.navigate('Items')}
       >
         <Text style={styles.buttonText}>Ver listado</Text>
       </Pressable>
@@ -22,11 +24,9 @@ export default function HomeScreen({ navigation }) {
       {/* Botón para ir a agregar elemento */}
       <Pressable
         style={styles.secondaryButton}
-        onPress={() => navigation.navigate("AddItem")}
+        onPress={() => navigation.navigate('AddItem')}
       >
-        <Text style={styles.secondaryButtonText}>
-          Agregar elemento
-        </Text>
+        <Text style={styles.secondaryButtonText}>Agregar elemento</Text>
       </Pressable>
 
     </View>
@@ -37,39 +37,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    justifyContent: "center",
-    backgroundColor: "#f5f7fb",
+    justifyContent: 'center',
+    backgroundColor: '#f5f7fb',
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 24,
-    color: "#555",
+    color: '#555',
   },
   button: {
-    backgroundColor: "#2563eb",
+    backgroundColor: '#2563eb',
     padding: 14,
     borderRadius: 8,
     marginBottom: 12,
   },
   buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
   secondaryButton: {
     borderWidth: 1,
-    borderColor: "#2563eb",
+    borderColor: '#2563eb',
     padding: 14,
     borderRadius: 8,
   },
   secondaryButtonText: {
-    color: "#2563eb",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#2563eb',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

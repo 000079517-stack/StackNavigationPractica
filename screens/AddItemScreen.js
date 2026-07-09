@@ -1,27 +1,31 @@
+// Importo useState para manejar los datos del formulario
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
-// Pantalla para agregar un nuevo elemento
 export default function AddItemScreen({ navigation, onAddItem }) {
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  // Estado para el título
+  const [title, setTitle] = useState('');
 
+  // Estado para la descripción
+  const [description, setDescription] = useState('');
+
+  // Función para guardar el nuevo elemento
   function handleSave() {
 
-    // Validación básica
-    if (title.trim() === "" || description.trim() === "") {
+    // Validación para evitar campos vacíos
+    if (title.trim() === '' || description.trim() === '') {
       return;
     }
 
-    // Enviar datos al padre (App.js)
+    // Agrego el nuevo elemento a la lista
     onAddItem({
-      title: title,
-      description: description,
+      title,
+      description,
     });
 
-    // Regresar al listado
-    navigation.navigate("Items");
+    // Regreso a la pantalla del listado
+    navigation.navigate('Items');
   }
 
   return (
@@ -58,34 +62,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: "#f5f7fb",
+    backgroundColor: '#f5f7fb',
   },
   label: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 6,
     marginTop: 12,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
   },
   textArea: {
     height: 100,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
   button: {
-    backgroundColor: "#2563eb",
+    backgroundColor: '#2563eb',
     padding: 14,
     borderRadius: 8,
     marginTop: 20,
   },
   buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
