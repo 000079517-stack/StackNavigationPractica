@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { getItems } from "../services/api";
 
-export default function ItemScreen({ navigation }) {
+export default function ItemsScreen({ navigation }) {
 
   // Guarda los elementos obtenidos de la API
   const [items, setItems] = useState([]);
@@ -16,19 +17,31 @@ export default function ItemScreen({ navigation }) {
   // Función para obtener los datos de la API
   async function cargarDatos() {
     try {
+      setError("");
+
       const datos = await getItems();
+
       setItems(datos);
+
     } catch (err) {
+
       setError(err.message);
+
     } finally {
+
       setLoading(false);
+
     }
   }
 
-  // Se ejecuta una sola vez al abrir la pantalla
-  useEffect(() => {
-    cargarDatos();
-  }, []);
+  // Cada vez que la pantalla obtiene el foco,
+  // vuelve a cargar la información
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      cargarDatos();
+    }, [])
+  );
 
   // Mientras carga la información
   if (loading) {
@@ -53,9 +66,9 @@ export default function ItemScreen({ navigation }) {
 
       {/* Encabezado */}
       <View style={styles.header}>
-        <Text style={styles.title}>Listado</Text>
 
-        {/* Botón para agregar un nuevo elemento */}
+        <Text style={styles.title}>Listado de tareas</Text>
+
         <Pressable
           style={styles.addButton}
           onPress={() => navigation.navigate("AddItem")}
@@ -65,7 +78,7 @@ export default function ItemScreen({ navigation }) {
 
       </View>
 
-      {/* Lista de elementos obtenidos desde la API */}
+      {/* Lista de elementos */}
       <FlatList
         data={items}
         keyExtractor={(item) => item.id.toString()}
@@ -74,8 +87,14 @@ export default function ItemScreen({ navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate("Detail", { item })}
           >
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text>{item.description}</Text>
+            <Text style={styles.cardTitle}>
+              {item.title}
+            </Text>
+
+            <Text>
+              {item.description}
+            </Text>
+
           </Pressable>
         )}
       />
@@ -85,31 +104,37 @@ export default function ItemScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     padding: 18,
     backgroundColor: "#f5f7fb",
   },
+
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
   },
+
   title: {
     fontSize: 22,
     fontWeight: "bold",
   },
+
   addButton: {
     backgroundColor: "#16a34a",
     paddingVertical: 10,
     paddingHorizontal: 14,
     borderRadius: 8,
   },
+
   addButtonText: {
     color: "#fff",
     fontWeight: "bold",
   },
+
   card: {
     backgroundColor: "#fff",
     padding: 16,
@@ -118,9 +143,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
   },
+
   cardTitle: {
     fontSize: 17,
     fontWeight: "bold",
     marginBottom: 4,
   },
+
 });

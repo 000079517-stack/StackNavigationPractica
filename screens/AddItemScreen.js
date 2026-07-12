@@ -1,37 +1,74 @@
-// Importo useState para manejar los datos del formulario
 import { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from "react-native";
 
-export default function AddItemScreen({ navigation, onAddItem }) {
+import { createItem } from "../services/api";
 
-  // Estado para el título
-  const [title, setTitle] = useState('');
 
-  // Estado para la descripción
-  const [description, setDescription] = useState('');
+export default function AddItemScreen({ navigation }) {
 
-  // Función para guardar el nuevo elemento
-  function handleSave() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-    // Validación para evitar campos vacíos
-    if (title.trim() === '' || description.trim() === '') {
+  async function handleSave() {
+
+    // Validación
+    if (title.trim() === "" || description.trim() === "") {
+
+      Alert.alert(
+        "Error",
+        "Todos los campos son obligatorios"
+      );
+
       return;
     }
 
-    // Agrego el nuevo elemento a la lista
-    onAddItem({
-      title,
-      description,
-    });
 
-    // Regreso a la pantalla del listado
-    navigation.navigate('Items');
+    try {
+
+      await createItem({
+        title,
+        description
+      });
+
+
+      Alert.alert(
+        "Éxito",
+        "Elemento creado correctamente"
+      );
+
+
+      // Regresa al listado
+      navigation.goBack();
+
+
+    } catch (error) {
+
+      Alert.alert(
+        "Error",
+        "No se pudo crear el elemento"
+      );
+
+    }
+
   }
 
+
   return (
+
     <View style={styles.container}>
 
-      <Text style={styles.label}>Título</Text>
+
+      <Text style={styles.label}>
+        Título
+      </Text>
+
 
       <TextInput
         style={styles.input}
@@ -40,7 +77,11 @@ export default function AddItemScreen({ navigation, onAddItem }) {
         onChangeText={setTitle}
       />
 
-      <Text style={styles.label}>Descripción</Text>
+
+      <Text style={styles.label}>
+        Descripción
+      </Text>
+
 
       <TextInput
         style={[styles.input, styles.textArea]}
@@ -50,46 +91,70 @@ export default function AddItemScreen({ navigation, onAddItem }) {
         multiline
       />
 
-      <Pressable style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Guardar</Text>
+
+      <Pressable
+        style={styles.button}
+        onPress={handleSave}
+      >
+
+        <Text style={styles.buttonText}>
+          Guardar
+        </Text>
+
       </Pressable>
 
+
     </View>
+
   );
+
 }
 
+
 const styles = StyleSheet.create({
+
   container: {
-    flex: 1,
-    padding: 24,
-    backgroundColor: '#f5f7fb',
+    flex:1,
+    padding:24,
+    backgroundColor:"#f5f7fb",
   },
-  label: {
-    fontWeight: 'bold',
-    marginBottom: 6,
-    marginTop: 12,
+
+
+  label:{
+    fontWeight:"bold",
+    marginBottom:6,
+    marginTop:12,
   },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
+
+
+  input:{
+    backgroundColor:"#fff",
+    borderWidth:1,
+    borderColor:"#ccc",
+    borderRadius:8,
+    padding:12,
+    fontSize:16,
   },
-  textArea: {
-    height: 100,
-    textAlignVertical: 'top',
+
+
+  textArea:{
+    height:100,
+    textAlignVertical:"top",
   },
-  button: {
-    backgroundColor: '#2563eb',
-    padding: 14,
-    borderRadius: 8,
-    marginTop: 20,
+
+
+  button:{
+    backgroundColor:"#2563eb",
+    padding:14,
+    borderRadius:8,
+    marginTop:20,
   },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
+
+
+  buttonText:{
+    color:"#fff",
+    textAlign:"center",
+    fontWeight:"bold",
   },
+
 });
